@@ -24,7 +24,8 @@
         android:id="@+id/name_job_input"
         android:layout_below="@+id/nombre_trabajo"
         android:layout_alignLeft="@+id/nombre_trabajo"
-        android:layout_alignStart="@+id/nombre_trabajo" />
+        android:layout_alignStart="@+id/nombre_trabajo"
+        android:textColor="@color/textWhite"/>
 
     <TextView
         android:layout_width="150dp"
@@ -44,7 +45,8 @@
         android:id="@+id/description_input"
         android:layout_below="@+id/textView2"
         android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2" />
+        android:layout_alignStart="@+id/textView2"
+        android:textColor="@color/textWhite"/>
 
     <TextView
         android:layout_width="150dp"
@@ -63,18 +65,29 @@
         android:layout_height="34dp"
         android:inputType="date"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/date_input"
         android:layout_below="@+id/textView3"
         android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
+        android:layout_alignStart="@+id/textView3"
+        android:textColor="@color/textWhite"/>
 
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="50dp"
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_menu_camera"
         android:id="@+id/add_photos"
-        android:layout_below="@+id/editText"
-        android:background="#bebebe"
-        android:layout_alignParentBottom="false"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/date_input"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        />
+    <Button
+        android:id="@+id/insert"
+        android:layout_marginTop="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insert_job"
+        android:includeFontPadding="true"
+        android:textSize="14dp"
+        />
 </RelativeLayout>
