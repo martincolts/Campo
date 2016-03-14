@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
+	 eee
      */
     private GoogleApiClient client;
     static final int ADD_REQUEST_CODE = 1 ;
