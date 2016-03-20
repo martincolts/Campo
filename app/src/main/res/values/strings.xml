@@ -17,4 +17,7 @@
     <string name="date">Date</string>
     <string name="insert_job">Insert job</string>
 
+    <string name="option1">Job list</string>
+    <string name="option2">Map</string>
+
 </resources>

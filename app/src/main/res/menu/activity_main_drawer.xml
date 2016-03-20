@@ -4,8 +4,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Data base" />
+            android:icon="@drawable/ic_menu_list"
+            android:title="@string/option1"/>
         <!--<item
             android:id="@+id/nav_gallery"
             android:icon="@drawable/ic_menu_gallery"
@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/ic_map_24dp"
-            android:title="Map" />
+            android:title="@string/option2"/>
         <!--<item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
