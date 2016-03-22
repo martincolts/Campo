@@ -14,7 +14,7 @@ public class Job {
     public Job(){
         this.id = 0;
         this.name = "";
-        this.coord = null;
+        this.coord = new CoordGPS();
         this.descrip = "";
         this.date = "";
         this.photo = new ArrayList<String>();

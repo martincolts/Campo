@@ -45,7 +45,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_JOBS_TABLE = "CREATE TABLE " + TABLE_JOBS + "("
-                + J_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + J_NAME + " TEXT, " + J_LAT +" TEXT, "+ J_LONG +" TEXT, "+ J_DESCRIP+ " TEXT, "
+                + J_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + J_NAME + " TEXT, " + J_LAT +" REAL, "+ J_LONG +" REAL, "+ J_DESCRIP+ " TEXT, "
                 +J_DATE + " TEXT " + ")";
         db.execSQL(CREATE_JOBS_TABLE);
 
@@ -74,8 +74,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(J_NAME, job.name);
-        values.put(J_LAT, String.valueOf(job.coord.latitud));
-        values.put(J_LONG, String.valueOf(job.coord.longitud));
+        values.put(J_LAT, job.coord.latitud);
+        values.put(J_LONG, job.coord.longitud);
         values.put(J_DESCRIP, job.descrip);
         values.put(J_DATE, job.date);
 
@@ -131,8 +131,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
                 job.id = cursor.getInt(0);
                 job.name = cursor.getString(1);
-                //job.coord.latitud= 0.0;//cursor.getFloat(2);
-                //job.coord.longitud= 0.0;//cursor.getFloat(3);
+                job.coord.latitud=cursor.getDouble(2);
+                job.coord.longitud= cursor.getDouble(3);
                 job.descrip = cursor.getString(4);
                 job.date = cursor.getString(5);
 

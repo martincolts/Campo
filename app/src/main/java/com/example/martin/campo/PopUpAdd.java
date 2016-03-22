@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +16,7 @@ import android.preference.DialogPreference;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +49,8 @@ public class PopUpAdd extends Activity{
     private List<String> temporalImages;
 
     private CoordGPS coord;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,14 +119,15 @@ public class PopUpAdd extends Activity{
         String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
         dateInput.setText(mydate);
         imagesImput.setText("");
-        coord = getLocationJob();
     }
 
-    private CoordGPS getLocationJob() { // TODO obtener desde el locationManager
+    private CoordGPS getLocationJob() { // TODO ver si anda asi sino levantarlo de un servicio para que arranque el popUp y empiece a buscar la location
         CoordGPS co = new CoordGPS();
-        co.latitud = 0.0;
-        co.longitud = 0.0;
 
+        Ubicacion ub = new Ubicacion(this);
+        co.longitud=ub.getLong();
+        co.latitud=ub.getLat();
+        Toast.makeText(this , "Coordenadas: lat:"+co.latitud +" Long:" + co.longitud, Toast.LENGTH_LONG).show();
         return co;
     }
 
@@ -176,7 +183,7 @@ public class PopUpAdd extends Activity{
             job.descrip = descriptionInput.getText().toString();
             job.date = dateInput.getText().toString();
             job.photo.addAll(temporalImages);// agrega todas las imagenes que habia guardado en la lista temporal.
-            job.coord = coord;
+            job.coord = getLocationJob();
 
 
             //TODO GUARDAR EN LA BD. se puede hacer como un thread
