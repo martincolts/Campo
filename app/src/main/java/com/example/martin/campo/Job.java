@@ -2,7 +2,9 @@ package com.example.martin.campo;
 
 import android.location.Location;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Legui on 18/03/2016.
@@ -15,7 +17,7 @@ public class Job {
         this.coord = null;
         this.descrip = "";
         this.date = "";
-        this.id_photo = 0;
+        this.photo = new ArrayList<String>();
     }
 
     public String getNane() {
@@ -37,8 +39,7 @@ public class Job {
     public String name;
     public String date;
     public String descrip;
-    public int id_photo;
-    public String[] photo;
+    public List<String> photo;
 
 
     @Override

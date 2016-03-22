@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Legui on 19/03/2016.
@@ -29,12 +30,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String J_LAT = "lat";
     private static final String J_LONG = "long";
     private static final String J_DESCRIP  = "descrip";
-    private static final String J_ID_PHOTO = "id_photo" ;
     private static final String J_DATE  = "date";
 
     // TABLA FOTOS
     private static final String TABLE_PHOTOS = "fotos";
-    private static final String P_ID_PHOTO  = "id_photo";
+    private static final String P_ID_JOB  = "id_job";
     private static final String P_LINK = "link";
 
     public DataBaseHandler(Context context) {
@@ -46,12 +46,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_JOBS_TABLE = "CREATE TABLE " + TABLE_JOBS + "("
                 + J_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + J_NAME + " TEXT, " + J_LAT +" TEXT, "+ J_LONG +" TEXT, "+ J_DESCRIP+ " TEXT, "
-                +J_ID_PHOTO+ " INTEGER, "
                 +J_DATE + " TEXT " + ")";
         db.execSQL(CREATE_JOBS_TABLE);
 
         String CREATE_PHOTOS_TABLE = "CREATE TABLE " + TABLE_PHOTOS + "("
-                + P_ID_PHOTO + " TEXT ," + P_LINK + " TEXT, PRIMARY KEY ( "+P_ID_PHOTO+" , "+P_LINK +" )"
+                + P_ID_JOB + " TEXT ," + P_LINK + " TEXT, PRIMARY KEY ( "+P_ID_JOB+" , "+P_LINK +" )"
                  + ")";
         db.execSQL(CREATE_PHOTOS_TABLE);
 
@@ -78,12 +77,34 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(J_LAT, String.valueOf(job.coord.latitud));
         values.put(J_LONG, String.valueOf(job.coord.longitud));
         values.put(J_DESCRIP, job.descrip);
-        values.put(J_ID_PHOTO, job.id_photo);
         values.put(J_DATE, job.date);
 
 // Inserting Row
         db.insert(TABLE_JOBS, null, values);
+        // una vez que lo insertó, ver cual es su id, y con ese id crear la relacion con la tabla photos
+        int id = getIdJob(job);
+        job.id = id;
+        updateJob(job);
+
         db.close(); // Closing database connection
+        addPhotos(job.photo, job.id);
+
+
+
+    }
+
+    private void addPhotos(List<String> photo, int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (String i:photo) {
+            ContentValues val = new ContentValues();
+            val.put(P_ID_JOB, id );
+            val.put(P_LINK,i);
+            db.insert(TABLE_PHOTOS, null, val);
+        }
+        db.close();
+
+
 
     }
 
@@ -113,8 +134,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 //job.coord.latitud= 0.0;//cursor.getFloat(2);
                 //job.coord.longitud= 0.0;//cursor.getFloat(3);
                 job.descrip = cursor.getString(4);
-                //job.id_photo = 0;//cursor.getInt(5);
-                job.date = cursor.getString(6);
+                job.date = cursor.getString(5);
 
                 Conteiner.jobs.add(job);
            } while (cursor.moveToNext());
@@ -129,7 +149,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = MainActivity.db.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_JOBS, new String[]{J_ID,
-                        J_NAME, J_LAT, J_LONG, J_DESCRIP,J_ID_PHOTO,J_DATE}, J_ID + "=?",
+                        J_NAME, J_LAT, J_LONG, J_DESCRIP,J_DATE}, J_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -140,8 +160,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         job.coord.latitud= cursor.getFloat(2);
         job.coord.longitud= cursor.getFloat(3);
         job.descrip = cursor.getString(4);
-        job.id_photo = cursor.getInt(5);
-        job.date = cursor.getString(6);
+        job.date = cursor.getString(5);
         db.close();
         return job;
 
@@ -158,7 +177,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         values.put(J_LAT, job.coord.latitud);
         values.put(J_LONG, job.coord.longitud);
         values.put(J_DESCRIP, job.descrip);
-        values.put(J_ID_PHOTO, job.id_photo);
         values.put(J_DATE, job.date);
 
 // updating row
