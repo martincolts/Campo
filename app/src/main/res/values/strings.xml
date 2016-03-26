@@ -21,5 +21,8 @@
     <string name="insert_job">Insert job</string>
     <string name="a">a</string>
     <string name="uri">URI Imagen:</string>
+    <string name="title_activity_detail">Job Detail</string>
+    <string name="images">Images</string>
+
 
 </resources>

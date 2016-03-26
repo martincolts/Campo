@@ -1,8 +1,10 @@
 package com.example.martin.campo;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -36,8 +39,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient client;
     static final int ADD_REQUEST_CODE = 1 ;
 
-    private ListView layout;
-    private ScrollView scrollView;
+    public ListView layout;
     public MyArrayAdapter adaptador;
     public static DataBaseHandler db;
 
@@ -52,11 +54,25 @@ public class MainActivity extends AppCompatActivity
 
         Conteiner.jobs = new ArrayList<Job>();
         db = new DataBaseHandler(this);
-        //System.out.println("tamaño de la base cuando arranca la app: "+db.getJobsCount());
         db.getAllJobs();
         layout = (ListView) findViewById(R.id.content);
+
         adaptador = new MyArrayAdapter(this, R.layout.layout_job , Conteiner.jobs);
         layout.setAdapter(adaptador);
+
+
+        layout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(MainActivity.this, DetailActivity.class);
+                i.putExtra("jobId", position);
+                startActivity(i);
+
+            }
+        });
+
+
+
         /////////////////////////////////////////////////////////////////////////////////////////
 
 

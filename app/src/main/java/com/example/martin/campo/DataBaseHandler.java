@@ -135,12 +135,26 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 job.coord.longitud= cursor.getDouble(3);
                 job.descrip = cursor.getString(4);
                 job.date = cursor.getString(5);
+                job.photo = getPhotos(job.id);
 
                 Conteiner.jobs.add(job);
            } while (cursor.moveToNext());
         }
         db1.close();
 
+    }
+
+    private List<String> getPhotos(int id) {
+        List<String> list = new ArrayList<String>();
+        SQLiteDatabase db1 = this.getWritableDatabase();
+        Cursor cursor = db1.rawQuery("SELECT * FROM fotos WHERE id_job = "+id , null);
+        if (cursor.moveToFirst()) {
+            do {
+               list.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        db1.close();
+        return list;
     }
 
 

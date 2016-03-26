@@ -102,10 +102,11 @@ public class PopUpAdd extends Activity{
             case SELECT_PICTURE:
                 if (resultCode == RESULT_OK){ // si la respuesta está bien.. entonces...
 
-                    Uri path = data.getData(); // TODO ver para transformar de un path a un URI
+                    Uri path = data.getData();
+
                     temporalImages.add(path.getPath()); // guarda en la lista adicional las path de las imagenes que se van seleccionando
                     imagesImput.append(path.getPath()); // se muestra en pantalla esos path
-                    imagen.setImageURI(path); // se muestra la ultima imagen
+                    imagen.setImageURI(Uri.parse("content://media"+path.getPath())); // se muestra la ultima imagen
                 }
             break;
         }
@@ -123,11 +124,10 @@ public class PopUpAdd extends Activity{
 
     private CoordGPS getLocationJob() { // TODO ver si anda asi sino levantarlo de un servicio para que arranque el popUp y empiece a buscar la location
         CoordGPS co = new CoordGPS();
-
         Ubicacion ub = new Ubicacion(this);
         co.longitud=ub.getLong();
         co.latitud=ub.getLat();
-        Toast.makeText(this , "Coordenadas: lat:"+co.latitud +" Long:" + co.longitud, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this , "Coordenadas: lat:"+co.latitud +" Long:" + co.longitud, Toast.LENGTH_LONG).show();
         return co;
     }
 
@@ -194,7 +194,6 @@ public class PopUpAdd extends Activity{
 
             Toast.makeText(this, "GUARDADO CORRECTAMENTE!!!", Toast.LENGTH_SHORT)
                     .show();
-
 
             finish();
 

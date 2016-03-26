@@ -1,11 +1,16 @@
 package com.example.martin.campo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Parcelable;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,23 +21,9 @@ import java.util.List;
  */
 public class MyArrayAdapter extends ArrayAdapter <Job> {
 
-
-
-    @Override
-    public int getCount() {
-        //System.out.println("El tamanio de la lista es: "+ Inventario.productos.size());
-        return Conteiner.jobs.size();
-    }
-
-    @Override
-    public Job getItem(int position) {
-       // System.out.println("Lo que devuelve el getItem: " + Inventario.productos.get(position).nombre +"....Inventario.productos en la posicion: "+position);
-        return Conteiner.jobs.get(position);
-    }
-
-
     private int layoutResourceId;
     private Context context;
+
 
     public MyArrayAdapter(Context context, int layoutResourceId, List<Job> trabajos) {
         super(context, layoutResourceId , trabajos);
@@ -46,13 +37,14 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
         Holder holder = null;
 
 
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        row = inflater.inflate(layoutResourceId, parent, false);
+
 
         holder = new Holder();
         holder.trabajo = Conteiner.jobs.get(position);
-        holder.bEdit = (ImageButton) row.findViewById(R.id.editButton);
-        holder.bDel = (ImageButton) row.findViewById(R.id.delButton);
+        //holder.bEdit = (ImageButton) row.findViewById(R.id.editButton);
+        //holder.bDel = (ImageButton) row.findViewById(R.id.delButton);
         //holder.bAdd = (ImageButton) row.findViewById(R.id.shareButton);
         holder.nombre = (TextView) row.findViewById(R.id.textViewNombre);
         row.setTag(holder);
@@ -62,7 +54,9 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
         final Holder finalHolder = holder;
 
 
-        /*holder.bAdd.setOnClickListener(new View.OnClickListener() {
+
+
+      /*  holder.bDel.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -70,38 +64,12 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setTitle("AGREGAR STOCK");
                 alert.setMessage("Ingrese cantidad a agregar");
-                final EditText agregarText = new EditText(context);
-                agregarText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                agregarText.setHint("Cantidad");
-                alert.setView(agregarText);
-                alert.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String cant = agregarText.getText().toString();
 
-                        if (TextUtils.isEmpty(cant)) {
-                            agregarText.setText("0");
-                        }
-                        else {
-                            Producto p = Inventario.productos.get(position);
-                            p.cantidad = p.cantidad + Integer.parseInt(cant);
-                            DataBaseHandler db = new DataBaseHandler(context);
-                            db.updateProducto(p);
-                            notifyDataSetChanged();
-                            Toast.makeText(context, "Se agregó correctamente!!",// TODO aca guardarolo o probar si con el finalHolder puedo cambiar directamente el valor
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                alert.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                });
                 alert.show();
 
             }
-        });*/
-
+        });
+*/
 
 
         return row;
@@ -116,11 +84,24 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
     public static class Holder { // es auxiliar
         Job trabajo;
         TextView nombre;
-        ImageButton bEdit;
-        ImageButton bDel;
+        //ImageButton bEdit;
+        //ImageButton bDel;
         //ImageButton bShare;
 
     }
+
+    @Override
+    public int getCount() {
+        //System.out.println("El tamanio de la lista es: "+ Inventario.productos.size());
+        return Conteiner.jobs.size();
+    }
+
+    @Override
+    public Job getItem(int position) {
+        // System.out.println("Lo que devuelve el getItem: " + Inventario.productos.get(position).nombre +"....Inventario.productos en la posicion: "+position);
+        return Conteiner.jobs.get(position);
+    }
+
 
 
     /*

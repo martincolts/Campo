@@ -15,7 +15,6 @@ public class Ubicacion implements LocationListener {
 
     Context mContext;
     LocationManager locationManager;
-    String proveedor;
 
     boolean isGPSEnabled = false; // flag para estado de gps
     boolean isNetworkEnabled = false;  // flag para estado de la red
