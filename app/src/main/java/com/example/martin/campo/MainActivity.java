@@ -1,10 +1,15 @@
 package com.example.martin.campo;
 
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +26,7 @@ import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, PruebaFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener{
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -29,6 +34,10 @@ public class MainActivity extends AppCompatActivity
      */
     private GoogleApiClient client;
     static final int ADD_REQUEST_CODE = 1 ;
+    FloatingActionButton fab = null ;
+
+    private MapFragment mapFragment = MapFragment.newInstance();
+    private PruebaFragment pruebaFragment = PruebaFragment.newInstance("","");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +67,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
+
+    // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
@@ -95,26 +105,41 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_job_list) {
+            fab.setVisibility(View.VISIBLE);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_main, PruebaFragment.newInstance("","")).commit();
         } else if (id == R.id.nav_map) {
-
+            fab.setVisibility(View.INVISIBLE);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_main, MapFragment.newInstance()).commit();
         }
+
+        // Insert the fragment by replacing any existing fra
+
+        // Highlight the selected item, update the title, and close the drawer
+        // Highlight the selected item has been done by NavigationView
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+       /* item.setChecked(true);
+        // Set action bar title
+        setTitle(item.getTitle());*/
         return true;
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
 /*
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -131,6 +156,19 @@ public class MainActivity extends AppCompatActivity
         );
         AppIndex.AppIndexApi.start(client, viewAction);*/
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction2 = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.martin.campo/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction2);
     }
 
     @Override
@@ -161,5 +199,15 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
