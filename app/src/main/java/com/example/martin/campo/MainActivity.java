@@ -1,24 +1,19 @@
 package com.example.martin.campo;
 
-<<<<<<< HEAD
-
-=======
 import android.app.AlertDialog;
->>>>>>> origin/Legui2
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-<<<<<<< HEAD
+
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-=======
+
 import android.util.Log;
->>>>>>> origin/Legui2
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -65,9 +60,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-<<<<<<< HEAD
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
-=======
         ///////////////////////////////////////////////// SE INICIALIZA LOS PRODUCTOS DESDE LA BD
 
         Conteiner.jobs = new ArrayList<Job>();
@@ -90,12 +84,7 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
-        /////////////////////////////////////////////////////////////////////////////////////////
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
->>>>>>> origin/Legui2
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -193,13 +182,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
-<<<<<<< HEAD
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
-=======
-
->>>>>>> origin/Legui2
 /*
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
