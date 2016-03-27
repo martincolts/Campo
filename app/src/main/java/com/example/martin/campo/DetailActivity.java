@@ -43,13 +43,9 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class DetailActivity extends AppCompatActivity  {
 
-
-
-
     private TextView infoo;
     private GridView photoV;
     private TextView nam;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +82,7 @@ public class DetailActivity extends AppCompatActivity  {
             }
         });
 
-
-
-
     }
-
-
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.

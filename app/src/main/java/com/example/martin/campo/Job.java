@@ -11,6 +11,13 @@ import java.util.List;
  */
 public class Job {
 
+    public int id;
+    public CoordGPS coord;
+    public String name;
+    public String date;
+    public String descrip;
+    public List<String> photo;
+
     public Job(){
         this.id = 0;
         this.name = "";
@@ -20,33 +27,18 @@ public class Job {
         this.photo = new ArrayList<String>();
     }
 
-    public String getNane() {
+    public String getName() {
         return name;
     }
-
-
-
 
     public void setName(String nombre) {
         this.name = nombre;
 
     }
 
-
-
-    public int id;
-    public CoordGPS coord;
-    public String name;
-    public String date;
-    public String descrip;
-    public List<String> photo;
-
-
     @Override
     public boolean equals(Object o) {
-
         Job job = (Job) o;
-
         return id == job.id;
 
     }
