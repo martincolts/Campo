@@ -3,7 +3,6 @@ package com.example.martin.campo;
 import android.location.Location;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
