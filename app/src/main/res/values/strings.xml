@@ -15,7 +15,15 @@
     <string name="name_job">Name job</string>
     <string name="description">Description</string>
     <string name="date">Date</string>
+    <string name="error_field_required">empty field</string>
+
+    <string name="error_photo_required">Debe seleccionar foto</string>
     <string name="insert_job">Insert job</string>
+    <string name="a">a</string>
+    <string name="uri">URI Imagen:</string>
+    <string name="title_activity_detail">Job Detail</string>
+    <string name="images">Images</string>
+
 
     <string name="option1">Job list</string>
     <string name="option2">Map</string>

@@ -1,15 +1,24 @@
 package com.example.martin.campo;
 
+<<<<<<< HEAD
 
+=======
+import android.app.AlertDialog;
+>>>>>>> origin/Legui2
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+<<<<<<< HEAD
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+=======
+import android.util.Log;
+>>>>>>> origin/Legui2
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,11 +28,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PruebaFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener{
@@ -31,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
+	 eee
      */
     private GoogleApiClient client;
     static final int ADD_REQUEST_CODE = 1 ;
@@ -39,6 +54,10 @@ public class MainActivity extends AppCompatActivity
     private MapFragment mapFragment = MapFragment.newInstance();
     private PruebaFragment pruebaFragment = PruebaFragment.newInstance("","");
 
+    public ListView layout;
+    public MyArrayAdapter adaptador;
+    public static DataBaseHandler db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +65,37 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+<<<<<<< HEAD
         fab = (FloatingActionButton) findViewById(R.id.fab);
+=======
+        ///////////////////////////////////////////////// SE INICIALIZA LOS PRODUCTOS DESDE LA BD
+
+        Conteiner.jobs = new ArrayList<Job>();
+        db = new DataBaseHandler(this);
+        db.getAllJobs();
+        layout = (ListView) findViewById(R.id.content);
+
+        adaptador = new MyArrayAdapter(this, R.layout.layout_job , Conteiner.jobs);
+        layout.setAdapter(adaptador);
+
+
+        layout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(MainActivity.this, DetailActivity.class);
+                i.putExtra("jobId", position);
+                startActivity(i);
+
+            }
+        });
+
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////
+
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+>>>>>>> origin/Legui2
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,12 +114,19 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
     // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
+
+
+
+
     }
 
     @Override
@@ -137,9 +193,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+<<<<<<< HEAD
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.connect();
+=======
+
+>>>>>>> origin/Legui2
 /*
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -195,10 +255,12 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_REQUEST_CODE){
             if (resultCode == RESULT_OK){
-                // aca tiene que estar el insert en la base.
+                //TODO aca tiene que estar el insert en la base.
+                //adaptador.notifyDataSetChanged();
             }
 
         }
+        adaptador.notifyDataSetChanged();
     }
 
     @Override
