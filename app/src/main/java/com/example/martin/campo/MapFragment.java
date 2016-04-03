@@ -19,6 +19,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Iterator;
 
 
 /**
@@ -156,6 +160,13 @@ public class MapFragment extends Fragment {
     public void onStart() {
         super.onStart();
        // map = ((SupportMapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        Iterator<Job> it = Conteiner.jobs.iterator();
+        while (it.hasNext()){
+            Job j = it.next();
+            mGoogleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(j.coord.latitud, j.coord.longitud))
+                    .title(j.getName()));
+        }
     }
 
 
