@@ -48,9 +48,9 @@ public class MainActivity extends AppCompatActivity
 
     private MapFragment mapFragment = MapFragment.newInstance();
     private PruebaFragment pruebaFragment = PruebaFragment.newInstance("","");
-
+/*
     public ListView layout;
-    public MyArrayAdapter adaptador;
+    public MyArrayAdapter adaptador;*/
     public static DataBaseHandler db;
 
     @Override
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         Conteiner.jobs = new ArrayList<Job>();
         db = new DataBaseHandler(this);
         db.getAllJobs();
+        /*
         layout = (ListView) findViewById(R.id.content);
 
         adaptador = new MyArrayAdapter(this, R.layout.layout_job , Conteiner.jobs);
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+        */
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -111,10 +113,8 @@ public class MainActivity extends AppCompatActivity
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-
-
-
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, pruebaFragment).commit();
 
     }
 
@@ -157,12 +157,14 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_job_list) {
             fab.setVisibility(View.VISIBLE);
+            //layout.setVisibility(View.VISIBLE);
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_main, PruebaFragment.newInstance("","")).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, pruebaFragment).commit();
         } else if (id == R.id.nav_map) {
             fab.setVisibility(View.INVISIBLE);
+            //layout.setVisibility(View.INVISIBLE);
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_main, MapFragment.newInstance()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, MapFragment.newInstance()).commit();
         }
 
         // Insert the fragment by replacing any existing fra
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
-        adaptador.notifyDataSetChanged();
+        PruebaFragment.adaptador.notifyDataSetChanged();
     }
 
     @Override
