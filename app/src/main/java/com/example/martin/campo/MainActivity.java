@@ -1,10 +1,13 @@
 package com.example.martin.campo;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 
@@ -32,7 +35,13 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, PruebaFragment.OnFragmentInteractionListener, MapFragment.OnFragmentInteractionListener{
@@ -53,17 +62,17 @@ public class MainActivity extends AppCompatActivity
     public MyArrayAdapter adaptador;
     public static DataBaseHandler db;
 
+    private String importfilepath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        ///////////////////////////////////////////////// SE INICIALIZA LOS PRODUCTOS DESDE LA BD
 
+        ///////////////////////////////////////////////// SE INICIALIZA LOS PRODUCTOS DESDE LA BD
         Conteiner.jobs = new ArrayList<Job>();
         db = new DataBaseHandler(this);
         db.getAllJobs();
@@ -71,6 +80,37 @@ public class MainActivity extends AppCompatActivity
 
         adaptador = new MyArrayAdapter(this, R.layout.layout_job , Conteiner.jobs);
         layout.setAdapter(adaptador);
+
+        ///////////////////////////////////////////////////EMAIL RECIVER///
+        // al recibir el email el archivo .zip llama a la app! y se descarga en el Importfilepath
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (action.compareTo(Intent.ACTION_VIEW) == 0) {
+            String scheme = intent.getScheme();
+            ContentResolver resolver = getContentResolver();
+
+            if (scheme.compareTo(ContentResolver.SCHEME_CONTENT) == 0) {
+                Uri uri = intent.getData();
+                String name = getContentName(resolver, uri);
+
+                Log.e("tag", "Content intent detected: " + action + " : " + intent.getDataString() + " : " + intent.getType() + " : " + name);
+                InputStream input = null;
+                try {
+                    input = resolver.openInputStream(uri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                importfilepath = "/storage/sdcard1/Download/" + name; // Aca guarda el .zip
+                InputStreamToFile(input, importfilepath);
+
+                String dir = name.substring(0, name.lastIndexOf('.'));// crea una carpeta dentro de Download, con el nombre del archivo .zip- Asi puede tener varios jobs.TODO me tiene que mandar con nombres que no se repitan
+                final Decoder descompresor = new Decoder(MainActivity.this,importfilepath ,"/storage/sdcard1/Download/"+dir+"/", false);//
+                descompresor.execute();// Descomprime el .zip y carga la lista/ actualizandola
+            }
+
+        }
+        /////////////////////////////////////////////////////End
+
 
 
         layout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,6 +157,42 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+    private String getContentName(ContentResolver resolver, Uri uri) {
+        Cursor cursor = resolver.query(uri, null, null, null, null);
+        Log.e("tag", "count Cursor: " + cursor.getCount() + "  ");
+        ////////////////////////////////////////////////////////////////////////////
+        cursor.moveToFirst(); // Solamente toma el primero
+        int nameIndex = cursor.getColumnIndex(MediaStore.MediaColumns.DISPLAY_NAME);
+        if (nameIndex >= 0) {
+          return cursor.getString(nameIndex);
+        } else {
+          return null;
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////
+
+
+    }
+
+    private void InputStreamToFile(InputStream in, String file) {
+        try {
+            OutputStream out = new FileOutputStream(new File(file));
+
+            int size = 0;
+            byte[] buffer = new byte[1024];
+
+            while ((size = in.read(buffer)) != -1) {
+                out.write(buffer, 0, size);
+            }
+
+            out.close();
+        }
+        catch (Exception e) {
+            Log.e("MainActivity", "InputStreamToFile exception: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -240,8 +316,6 @@ public class MainActivity extends AppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_REQUEST_CODE){
             if (resultCode == RESULT_OK){
-                //TODO aca tiene que estar el insert en la base.
-                //adaptador.notifyDataSetChanged();
             }
 
         }

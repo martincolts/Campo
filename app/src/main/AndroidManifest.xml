@@ -27,10 +27,24 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- Intent de email with attachment-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/zip" />
+                <data android:mimeType="application/octet-stream" android:host="gmail-ls"  />
+            </intent-filter>
+
+
         </activity>
+
+
+
         <activity
             android:name=".PopUpAdd"
             android:theme="@style/AppTheme.PopUpTheme" />
@@ -43,6 +57,7 @@
                 android:value="com.example.martin.campo.MainActivity" />
         </activity>
         <activity android:name=".showImage"></activity>
+
 
         <meta-data
             android:name="com.google.android.gms.version"

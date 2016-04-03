@@ -15,6 +15,9 @@ public class showImage extends AppCompatActivity {
         setContentView(R.layout.activity_show_image);
         im = (ImageView) findViewById(R.id.imageView5);
         String i = (String) getIntent().getExtras().get("jobUri");
+        if (i.contains(".jpg")){
+            im.setImageURI( Uri.parse(i)) ;
+        }else {
         im.setImageURI( Uri.parse("content://media"+i)) ;
-    }
+    }}
 }

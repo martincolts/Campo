@@ -33,7 +33,12 @@ public class ImageAdapter extends BaseAdapter {
 
     private void getUri() {
         for (String i : mThumbIds) {
-            Uri u = Uri.parse("content://media"+i) ;// Uri.parse("content://media"+path.getPath())
+            Uri u;
+            if (i.contains(".jpg")){
+                u =Uri.parse(i) ;
+            }else {
+                u = Uri.parse("content://media" + i);// Uri.parse("content://media"+path.getPath())
+            }
             uris.add(u);
         }
     }
