@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.LayoutInflater;
@@ -43,39 +44,18 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
 
         holder = new Holder();
         holder.trabajo = Conteiner.jobs.get(position);
-        //holder.bEdit = (ImageButton) row.findViewById(R.id.editButton);
-        //holder.bDel = (ImageButton) row.findViewById(R.id.delButton);
-        //holder.bAdd = (ImageButton) row.findViewById(R.id.shareButton);
         holder.nombre = (TextView) row.findViewById(R.id.textViewNombre);
         row.setTag(holder);
-
-
         setupItem(holder);
-        final Holder finalHolder = holder;
-
-
-
-
-      /*  holder.bDel.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle("AGREGAR STOCK");
-                alert.setMessage("Ingrese cantidad a agregar");
-
-                alert.show();
-
-            }
-        });
-*/
-
 
         return row;
     }
 
     private void setupItem(Holder holder) {
+        if(holder.trabajo.isImported){
+            holder.nombre.setTextColor(Color.parseColor("#FFBA2020"));
+        };
+
         String resultado = holder.trabajo.name + " \n"+ holder.trabajo.date;
         holder.nombre.setText(resultado);
 
@@ -84,10 +64,6 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
     public static class Holder { // es auxiliar
         Job trabajo;
         TextView nombre;
-        //ImageButton bEdit;
-        //ImageButton bDel;
-        //ImageButton bShare;
-
     }
 
     @Override

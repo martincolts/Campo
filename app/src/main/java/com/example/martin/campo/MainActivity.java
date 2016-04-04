@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
      */
     private GoogleApiClient client;
     static final int ADD_REQUEST_CODE = 1 ;
+    static final int DEL_REQUEST_CODE = 2 ;
     FloatingActionButton fab = null ;
 
     private MapFragment mapFragment = MapFragment.newInstance();
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(MainActivity.this, DetailActivity.class);
                 i.putExtra("jobId", position);
-                startActivity(i);
+                startActivityForResult(i, DEL_REQUEST_CODE );
 
             }
         });
@@ -314,11 +315,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ADD_REQUEST_CODE){
-            if (resultCode == RESULT_OK){
-            }
-
-        }
         adaptador.notifyDataSetChanged();
     }
 

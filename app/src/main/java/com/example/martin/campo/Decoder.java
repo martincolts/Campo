@@ -131,6 +131,7 @@ public class Decoder extends AsyncTask {
             job.descrip = l.get(2);
             job.coord.latitud = Double.parseDouble(l.get(3));
             job.coord.longitud = Double.parseDouble(l.get(4));
+            job.isImported = true;
             Conteiner.jobs.add(job);
 
         } catch (IOException e) {
