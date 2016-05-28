@@ -121,7 +121,6 @@ public class PruebaFragment extends Fragment {
                 Intent i = new Intent(getActivity(), DetailActivity.class);
                 i.putExtra("jobId", position);
                 startActivity(i);
-
             }
         });
     }

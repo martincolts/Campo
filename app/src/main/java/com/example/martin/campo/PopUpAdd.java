@@ -2,17 +2,21 @@ package com.example.martin.campo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.DialogPreference;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -47,6 +51,7 @@ public class PopUpAdd extends Activity{
     private ImageView imagen;
 
     private List<String> temporalImages;
+    private List<String> temporalImagesRealUri;
 
     private CoordGPS coord;
 
@@ -91,7 +96,6 @@ public class PopUpAdd extends Activity{
             }
         });
 
-
     }
 
     @Override
@@ -104,7 +108,23 @@ public class PopUpAdd extends Activity{
 
                     Uri path = data.getData();
 
+                    String realPath;
+                    // SDK < API11
+                    if (Build.VERSION.SDK_INT < 11)
+                        realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
+
+                        // SDK >= 11 && SDK < 19
+                    else if (Build.VERSION.SDK_INT < 19)
+                        realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
+
+                        // SDK > 19 (Android 4.4)
+                    else
+                        realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+
+                    Log.v("path photo", path.toString());
+                    Log.v("real path photo", realPath);
                     temporalImages.add(path.getPath()); // guarda en la lista adicional las path de las imagenes que se van seleccionando
+                    temporalImagesRealUri.add(realPath);
                     imagesImput.append(path.getPath()); // se muestra en pantalla esos path
                     imagen.setImageURI(Uri.parse("content://media"+path.getPath())); // se muestra la ultima imagen
                 }
@@ -113,10 +133,9 @@ public class PopUpAdd extends Activity{
 
     }
 
-
-
     private void inicilizar() {
         temporalImages = new ArrayList<String>();
+        temporalImagesRealUri = new ArrayList<String>();
         String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
         dateInput.setText(mydate);
         imagesImput.setText("");
@@ -127,13 +146,10 @@ public class PopUpAdd extends Activity{
         Ubicacion ub = new Ubicacion(this);
         co.longitud=ub.getLong();
         co.latitud=ub.getLat();
-        //Toast.makeText(this , "Coordenadas: lat:"+co.latitud +" Long:" + co.longitud, Toast.LENGTH_LONG).show();
         return co;
     }
 
     private void insertJob() {
-
-
 
         // Reset errors.
         nameJobInput.setError(null);
@@ -146,10 +162,8 @@ public class PopUpAdd extends Activity{
 
         String photo = imagesImput.getText().toString();
 
-
         boolean cancel = false;
         View focusView = null;
-
 
         // Check for a photo in
         if (TextUtils.isEmpty(photo)) {
@@ -163,28 +177,23 @@ public class PopUpAdd extends Activity{
             focusView = nameJobInput;
             cancel = true;
         }
-
         // Check for a valid description
         if (TextUtils.isEmpty(desc)) {
             descriptionInput.setError(getString(R.string.error_field_required));
             focusView = descriptionInput;
             cancel = true;
         }
-
-
-
         if (cancel) {
             focusView.requestFocus();
         } else {
-
 
             Job job = new Job();
             job.name = nameJobInput.getText().toString();
             job.descrip = descriptionInput.getText().toString();
             job.date = dateInput.getText().toString();
             job.photo.addAll(temporalImages);// agrega todas las imagenes que habia guardado en la lista temporal.
+            job.photosRealUri.addAll(temporalImagesRealUri);
             job.coord = getLocationJob();
-
 
             //TODO GUARDAR EN LA BD. se puede hacer como un thread
             DataBaseHandler db = new DataBaseHandler(this);
@@ -196,10 +205,7 @@ public class PopUpAdd extends Activity{
                     .show();
 
             finish();
-
         }
-
-
-
     }
+
 }

@@ -17,6 +17,7 @@ public class Job {
     public String descrip;
     public List<String> photo;
     public Boolean isImported = false;
+    public List<String> photosRealUri ;
 
     public Job(){
         this.id = 0;
@@ -25,6 +26,7 @@ public class Job {
         this.descrip = "";
         this.date = "";
         this.photo = new ArrayList<String>();
+        this.photosRealUri = new ArrayList<String>();
     }
 
     public String getName() {
@@ -33,14 +35,12 @@ public class Job {
 
     public void setName(String nombre) {
         this.name = nombre;
-
     }
 
     @Override
     public boolean equals(Object o) {
         Job job = (Job) o;
         return id == job.id;
-
     }
 
 
