@@ -16,6 +16,7 @@ public class Job {
     public String date;
     public String descrip;
     public List<String> photo;
+    public Boolean isImported = false;
 
     public Job(){
         this.id = 0;

@@ -33,7 +33,12 @@ public class ImageAdapter extends BaseAdapter {
 
     private void getUri() {
         for (String i : mThumbIds) {
-            Uri u = Uri.parse("content://media"+i) ;// Uri.parse("content://media"+path.getPath())
+            Uri u;
+            if (i.contains(".jpg")){
+                u =Uri.parse(i) ;
+            }else {
+                u = Uri.parse("content://media" + i);
+            }
             uris.add(u);
         }
     }
@@ -69,21 +74,6 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         imageView.setImageURI(uris.get(position));//setImageResource(mThumbIds[position]);
-        ///////////////////////
-        try {
-            imageView.setTag(position);
-            //Ponemos un borde de color naranja a la imagen en miniatura seleccionada en el GrisView
-            if (position == mSelected) {
-                imageView.setBackgroundColor(Color.parseColor("#ff6203"));
-            } else {
-                imageView.setBackgroundColor(Color.TRANSPARENT);
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        ////////////////////////////////////////////////////////
         return imageView;
     }
 
