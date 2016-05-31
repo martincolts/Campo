@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     static final int ADD_REQUEST_CODE = 1 ;
     static final int DEL_REQUEST_CODE = 2 ;
     FloatingActionButton fab = null ;
-
+    public MyArrayAdapter adaptador;
     private MapFragment mapFragment = MapFragment.newInstance();
     private PruebaFragment pruebaFragment = PruebaFragment.newInstance("","");
 /*
