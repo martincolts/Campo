@@ -30,6 +30,7 @@ public class Decoder extends AsyncTask {
     boolean _Mantener_ZIP;
     Job job;
     private MainActivity myMainActivity;
+    private PruebaFragment myPruebaFragment ;
     Context cotx;
 
     /**
@@ -53,7 +54,7 @@ public class Decoder extends AsyncTask {
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
 
-        myMainActivity.adaptador.notifyDataSetChanged();
+        myPruebaFragment.adaptador.notifyDataSetChanged();
 
     }
 

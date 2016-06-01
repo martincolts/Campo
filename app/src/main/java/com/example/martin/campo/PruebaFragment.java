@@ -1,5 +1,6 @@
 package com.example.martin.campo;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -27,7 +28,7 @@ public class PruebaFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    static final int DEL_REQUEST_CODE = 2 ;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -64,8 +65,6 @@ public class PruebaFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-
-
     }
 
     @Override
@@ -81,8 +80,6 @@ public class PruebaFragment extends Fragment {
 
         adaptador = new MyArrayAdapter(this.getActivity(), R.layout.layout_job , Conteiner.jobs);
         layout.setAdapter(adaptador);
-
-
 
 
         return v ;
@@ -120,9 +117,10 @@ public class PruebaFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(getActivity(), DetailActivity.class);
                 i.putExtra("jobId", position);
-                startActivity(i);
+                startActivityForResult(i, DEL_REQUEST_CODE );
             }
         });
+
     }
 
     /**

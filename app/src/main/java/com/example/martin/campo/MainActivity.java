@@ -53,9 +53,9 @@ public class MainActivity extends AppCompatActivity
      */
     private GoogleApiClient client;
     static final int ADD_REQUEST_CODE = 1 ;
-    static final int DEL_REQUEST_CODE = 2 ;
+
     FloatingActionButton fab = null ;
-    public MyArrayAdapter adaptador;
+//    public MyArrayAdapter adaptador;
     private MapFragment mapFragment = MapFragment.newInstance();
     private PruebaFragment pruebaFragment = PruebaFragment.newInstance("","");
 /*
@@ -78,6 +78,33 @@ public class MainActivity extends AppCompatActivity
         Conteiner.jobs = new ArrayList<Job>();
         db = new DataBaseHandler(this);
         db.getAllJobs();
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (action.compareTo(Intent.ACTION_VIEW) == 0) {
+            String scheme = intent.getScheme();
+            ContentResolver resolver = getContentResolver();
+
+            if (scheme.compareTo(ContentResolver.SCHEME_CONTENT) == 0) {
+                Uri uri = intent.getData();
+                String name = getContentName(resolver, uri);
+
+                Log.e("tag", "Content intent detected: " + action + " : " + intent.getDataString() + " : " + intent.getType() + " : " + name);
+                InputStream input = null;
+                try {
+                    input = resolver.openInputStream(uri);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                importfilepath = "/storage/sdcard0/Download/" + name; // Aca guarda el .zip
+                InputStreamToFile(input, importfilepath);
+
+                String dir = name.substring(0, name.lastIndexOf('.'));// crea una carpeta dentro de Download, con el nombre del archivo .zip- Asi puede tener varios jobs.TODO me tiene que mandar con nombres que no se repitan
+                final Decoder descompresor = new Decoder(MainActivity.this,importfilepath ,"/storage/sdcard1/Download/"+dir+"/", false);//
+                descompresor.execute();// Descomprime el .zip y carga la lista/ actualizandola
+            }
+
+        }
         /*
         layout = (ListView) findViewById(R.id.content);
 
