@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
@@ -81,29 +82,35 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         String action = intent.getAction();
-        if (action.compareTo(Intent.ACTION_VIEW) == 0) {
-            String scheme = intent.getScheme();
-            ContentResolver resolver = getContentResolver();
+        if (action != null) {
+            if (action.compareTo(Intent.ACTION_VIEW) == 0) {
+                String scheme = intent.getScheme();
+                ContentResolver resolver = getContentResolver();
 
-            if (scheme.compareTo(ContentResolver.SCHEME_CONTENT) == 0) {
-                Uri uri = intent.getData();
-                String name = getContentName(resolver, uri);
+                if (scheme.compareTo(ContentResolver.SCHEME_CONTENT) == 0) {
+                    Uri uri = intent.getData();
+                    String name = getContentName(resolver, uri);
 
-                Log.e("tag", "Content intent detected: " + action + " : " + intent.getDataString() + " : " + intent.getType() + " : " + name);
-                InputStream input = null;
-                try {
-                    input = resolver.openInputStream(uri);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    Log.e("tag", "Content intent detected: " + action + " : " + intent.getDataString() + " : " + intent.getType() + " : " + name);
+                    InputStream input = null;
+                    try {
+                        input = resolver.openInputStream(uri);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    String downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+                    Log.e("Download folder", downloadFolder);
+                    // importfilepath = "/storage/sdcard0/Download/" + name; // Aca guarda el .zip
+                    importfilepath = downloadFolder + "/" + name;
+                    InputStreamToFile(input, importfilepath);
+
+                    String dir = name.substring(0, name.lastIndexOf('.'));// crea una carpeta dentro de Download, con el nombre del archivo .zip- Asi puede tener varios jobs.TODO me tiene que mandar con nombres que no se repitan
+                    //final Decoder descompresor = new Decoder(MainActivity.this,importfilepath ,"/storage/sdcard0/Download/"+dir+"/", false);//
+                    final Decoder descompresor = new Decoder(MainActivity.this, importfilepath, downloadFolder + "/" + dir + "/", false);//
+                    descompresor.execute();// Descomprime el .zip y carga la lista/ actualizandola
                 }
-                importfilepath = "/storage/sdcard0/Download/" + name; // Aca guarda el .zip
-                InputStreamToFile(input, importfilepath);
 
-                String dir = name.substring(0, name.lastIndexOf('.'));// crea una carpeta dentro de Download, con el nombre del archivo .zip- Asi puede tener varios jobs.TODO me tiene que mandar con nombres que no se repitan
-                final Decoder descompresor = new Decoder(MainActivity.this,importfilepath ,"/storage/sdcard1/Download/"+dir+"/", false);//
-                descompresor.execute();// Descomprime el .zip y carga la lista/ actualizandola
             }
-
         }
         /*
         layout = (ListView) findViewById(R.id.content);
