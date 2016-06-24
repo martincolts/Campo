@@ -195,6 +195,14 @@ public class PopUpAdd extends Activity{
             job.photosRealUri.addAll(temporalImagesRealUri);
             job.coord = getLocationJob();
 
+            for (int i = 0 ; i < job.photo.size() ; i++ ){
+                Log.v("file photo: ", job.photo.get(i).toString());
+            }
+
+            for (int i = 0 ; i < job.photosRealUri.size() ; i++ ){
+                Log.v("file photoRealUri: ", job.photosRealUri.get(i).toString());
+            }
+
             //TODO GUARDAR EN LA BD. se puede hacer como un thread
             DataBaseHandler db = new DataBaseHandler(this);
             db.addJob(job);

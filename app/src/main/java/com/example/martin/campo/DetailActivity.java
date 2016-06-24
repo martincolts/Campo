@@ -189,9 +189,9 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    String downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                    String targetFilePath = downloadsDirectory + File.separator + "Campo_Folder";
-                    File root = new File(targetFilePath);
+                    File root = new File(Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder");
+                    if(!root.isDirectory())
+                        root.mkdirs();
                     File gpxfile = new File(root, "texto.txt");
                     gpxfile.delete();
                     FileWriter writer = new FileWriter(gpxfile, true);
@@ -205,7 +205,10 @@ public class DetailActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Se creo el archivo de texto", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Log.v("file No se creo ","");
                 }
+
+
 
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
@@ -213,22 +216,30 @@ public class DetailActivity extends AppCompatActivity {
                 StringBuilder title = titleBuilder.append("Campo App, recibiste el Job: ").append(j.name);
                 i.putExtra(Intent.EXTRA_SUBJECT, title.toString());
                 i.putExtra(Intent.EXTRA_TEXT, "Por favor, para ver los datos recibidos con nuestra aplicacion abra con la misma el .zip adjunto, Muchas gracias");
-                //String targetFilePath = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "texto.txt";
-                String downloadsDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                String targetFilePath = downloadsDirectory + File.separator + "Campo_Folder" + File.separator + "texto.txt";
+
+                String targetFilePath = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "texto.txt";
+
                 Log.v("File path texto: ", targetFilePath);
                 Uri attachmentUri = Uri.parse(targetFilePath);
 
                 i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + attachmentUri));
 
                 Vector<String> datos = new Vector<String>();
-                //datos.add(Environment.getExternalStorageDirectory()+File.separator+"Campo_Folder"+File.separator+"texto.txt");
+
                 datos.add(targetFilePath);
-                //Toast.makeText(getBaseContext(),Environment.getExternalStorageDirectory()+File.separator+"Campo_Folder"+File.separator+"texto.txt",Toast.LENGTH_LONG).show();
+
+                Log.v("file photos cant", (((Integer)j.photosRealUri.size()).toString()));
                 for (String pho : j.photosRealUri){
                     datos.add(pho.toString());
+                    Log.v("file, foto: ", pho.toString());
                 }
-                String zipFile = downloadsDirectory + File.separator + "Campo_Folder" + File.separator + "Data.zip";
+
+                String zipFile = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Data.zip";
+                File zipFileLocate = new File (Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Data.zip");
+                if (zipFileLocate.exists()){
+                    zipFileLocate.delete();
+                }
+                Log.v("file, Data.zip",zipFile);
                 Uri attachmentUriZip = Uri.parse(zipFile);
                 i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+attachmentUriZip));
                 try {
