@@ -205,17 +205,16 @@ public class DetailActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "Se creo el archivo de texto", Toast.LENGTH_SHORT).show();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.v("file No se creo ","");
+                    Log.v("file No se creo ", "");
                 }
 
-
-
-                Intent i = new Intent(Intent.ACTION_SEND);
-                i.setType("message/rfc822");
+                Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);
+                i.setType("text/plain");
                 StringBuilder titleBuilder = new StringBuilder();
                 StringBuilder title = titleBuilder.append("Campo App, recibiste el Job: ").append(j.name);
                 i.putExtra(Intent.EXTRA_SUBJECT, title.toString());
-                i.putExtra(Intent.EXTRA_TEXT, "Por favor, para ver los datos recibidos con nuestra aplicacion abra con la misma el .zip adjunto, Muchas gracias");
+
+                i.putExtra(Intent.EXTRA_TEXT, "Por favor, para ver los datos recibidos con nuestra aplicacion abra con la misma el .zip adjunto, Muchas gracias \n\n"+j.getName() + "\n"+j.date + "\n"+j.descrip + "\n"+j.coord.latitud + "\n"+j.coord.longitud + "\n");
 
                 String targetFilePath = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "texto.txt";
 
@@ -226,23 +225,26 @@ public class DetailActivity extends AppCompatActivity {
 
                 Vector<String> datos = new Vector<String>();
 
+                ArrayList<Uri> data = new ArrayList<Uri>();
+                data.add(Uri.fromFile(new File(targetFilePath)));
                 datos.add(targetFilePath);
 
                 Log.v("file photos cant", (((Integer)j.photosRealUri.size()).toString()));
                 for (String pho : j.photosRealUri){
                     datos.add(pho.toString());
+                    data.add(Uri.fromFile(new File(pho.toString())));
                     Log.v("file, foto: ", pho.toString());
                 }
 
                 String day = j.date.toString().split("/")[0];
                 String month = j.date.toString().split("/")[1];
-                String year = j.date.toString().split("/")[2].split(" ")[0];
+                String yearTemp = j.date.toString().split("/")[2];
+                String year = yearTemp.split(" ")[0];
                 String hs = j.date.toString().split(" ")[1].split(":")[0];
                 String min = j.date.toString().split(" ")[1].split(":")[1];
                 String sec = j.date.toString().split(" ")[1].split(":")[2];
 
                 String date = day+"_"+month+"_"+year+"_"+hs+"_"+min+"_"+sec;
-
 
                 String zipFile = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Job"+date+".zip";
 
@@ -250,9 +252,13 @@ public class DetailActivity extends AppCompatActivity {
                 if (zipFileLocate.exists()){
                     zipFileLocate.delete();
                 }
-                Log.v("file, Data.zip",zipFile);
+                data.add(Uri.fromFile(zipFileLocate));
+                Log.v("file, Data.zip", zipFile);
                 Uri attachmentUriZip = Uri.parse(zipFile);
-                i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+attachmentUriZip));
+                //i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+attachmentUriZip));
+               /* for (int j = 0 ; j < datos.size(); j++)
+                    i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+datos.elementAt(j)));*/
+                i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, data);
                 try {
                     zip(zipFile, datos);
 

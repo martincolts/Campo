@@ -36,6 +36,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PHOTOS = "fotos";
     private static final String P_ID_JOB  = "id_job";
     private static final String P_LINK = "link";
+    private static final String P_LINKPATH = "linkPath";
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +51,7 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_JOBS_TABLE);
 
         String CREATE_PHOTOS_TABLE = "CREATE TABLE " + TABLE_PHOTOS + "("
-                + P_ID_JOB + " TEXT ," + P_LINK + " TEXT, PRIMARY KEY ( "+P_ID_JOB+" , "+P_LINK +" )"
+                + P_ID_JOB + " TEXT ," + P_LINK + " TEXT," + P_LINKPATH + " TEXT, PRIMARY KEY ( "+P_ID_JOB+" , "+P_LINK +" )"
                  + ")";
         db.execSQL(CREATE_PHOTOS_TABLE);
 
@@ -87,21 +88,25 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         updateJob(job);
 
         db.close(); // Closing database connection
-        addPhotos(job.photo, job.id);
+        addPhotos(job.photo, job.id, job.photosRealUri);
 
 
 
     }
 
-    private void addPhotos(List<String> photo, int id) {
+    private void addPhotos(List<String> photo, int id , List<String> photoRealUri) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        for (String i:photo) {
+
+
+        for (int i = 0 ; i < photo.size(); i++) {
             ContentValues val = new ContentValues();
             val.put(P_ID_JOB, id );
-            val.put(P_LINK,i);
+            val.put(P_LINK,photo.get(i));
+            val.put(P_LINKPATH,photoRealUri.get(i));
             db.insert(TABLE_PHOTOS, null, val);
         }
+
         db.close();
 
 
@@ -136,6 +141,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 job.descrip = cursor.getString(4);
                 job.date = cursor.getString(5);
                 job.photo = getPhotos(job.id);
+                job.photosRealUri = getPhotosRealUri(job.id);
+
 
                 Conteiner.jobs.add(job);
            } while (cursor.moveToNext());
@@ -151,6 +158,19 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                list.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        db1.close();
+        return list;
+    }
+
+    private List<String> getPhotosRealUri(int id) {
+        List<String> list = new ArrayList<String>();
+        SQLiteDatabase db1 = this.getWritableDatabase();
+        Cursor cursor = db1.rawQuery("SELECT * FROM fotos WHERE id_job = "+id , null);
+        if (cursor.moveToFirst()) {
+            do {
+                list.add(cursor.getString(2));
             } while (cursor.moveToNext());
         }
         db1.close();

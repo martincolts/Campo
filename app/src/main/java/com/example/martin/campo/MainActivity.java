@@ -112,55 +112,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         }
-        /*
-        layout = (ListView) findViewById(R.id.content);
-
-        adaptador = new MyArrayAdapter(this, R.layout.layout_job , Conteiner.jobs);
-        layout.setAdapter(adaptador);
-
-        ///////////////////////////////////////////////////EMAIL RECIVER///
-        // al recibir el email el archivo .zip llama a la app! y se descarga en el Importfilepath
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        if (action.compareTo(Intent.ACTION_VIEW) == 0) {
-            String scheme = intent.getScheme();
-            ContentResolver resolver = getContentResolver();
-
-            if (scheme.compareTo(ContentResolver.SCHEME_CONTENT) == 0) {
-                Uri uri = intent.getData();
-                String name = getContentName(resolver, uri);
-
-                Log.e("tag", "Content intent detected: " + action + " : " + intent.getDataString() + " : " + intent.getType() + " : " + name);
-                InputStream input = null;
-                try {
-                    input = resolver.openInputStream(uri);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                importfilepath = "/storage/sdcard1/Download/" + name; // Aca guarda el .zip
-                InputStreamToFile(input, importfilepath);
-
-                String dir = name.substring(0, name.lastIndexOf('.'));// crea una carpeta dentro de Download, con el nombre del archivo .zip- Asi puede tener varios jobs.TODO me tiene que mandar con nombres que no se repitan
-                final Decoder descompresor = new Decoder(MainActivity.this,importfilepath ,"/storage/sdcard1/Download/"+dir+"/", false);//
-                descompresor.execute();// Descomprime el .zip y carga la lista/ actualizandola
-            }
-
-        }
-        /////////////////////////////////////////////////////End
-
-
-
-        layout.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(MainActivity.this, DetailActivity.class);
-                i.putExtra("jobId", position);
-                startActivityForResult(i, DEL_REQUEST_CODE );
-
-            }
-        });
-        */
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
