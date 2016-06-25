@@ -109,6 +109,7 @@ public class PopUpAdd extends Activity{
                     Uri path = data.getData();
 
                     String realPath;
+                    Log.v("path buscando path",path.toString());
                     // SDK < API11
                     if (Build.VERSION.SDK_INT < 11)
                         realPath = RealPathUtil.getRealPathFromURI_BelowAPI11(this, data.getData());
@@ -119,7 +120,7 @@ public class PopUpAdd extends Activity{
 
                         // SDK > 19 (Android 4.4)
                     else
-                        realPath = RealPathUtil.getRealPathFromURI_API19(this, data.getData());
+                        realPath = RealPathUtil.getRealPathFromURI_API11to18(this, data.getData());
 
                     Log.v("path photo", path.toString());
                     Log.v("real path photo", realPath);

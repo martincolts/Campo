@@ -101,12 +101,12 @@ public class MainActivity extends AppCompatActivity
                     String downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
                     Log.e("Download folder", downloadFolder);
                     // importfilepath = "/storage/sdcard0/Download/" + name; // Aca guarda el .zip
-                    importfilepath = downloadFolder + "/" + name;
+                    importfilepath = downloadFolder + File.separator + name; // Aca guarda el .zip
                     InputStreamToFile(input, importfilepath);
 
                     String dir = name.substring(0, name.lastIndexOf('.'));// crea una carpeta dentro de Download, con el nombre del archivo .zip- Asi puede tener varios jobs.TODO me tiene que mandar con nombres que no se repitan
                     //final Decoder descompresor = new Decoder(MainActivity.this,importfilepath ,"/storage/sdcard0/Download/"+dir+"/", false);//
-                    final Decoder descompresor = new Decoder(MainActivity.this, importfilepath, downloadFolder + "/" + dir + "/", false);//
+                    final Decoder descompresor = new Decoder(MainActivity.this, importfilepath, downloadFolder + File.separator + dir + File.separator, false);//
                     descompresor.execute();// Descomprime el .zip y carga la lista/ actualizandola
                 }
 

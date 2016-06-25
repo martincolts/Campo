@@ -234,8 +234,19 @@ public class DetailActivity extends AppCompatActivity {
                     Log.v("file, foto: ", pho.toString());
                 }
 
-                String zipFile = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Data.zip";
-                File zipFileLocate = new File (Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Data.zip");
+                String day = j.date.toString().split("/")[0];
+                String month = j.date.toString().split("/")[1];
+                String year = j.date.toString().split("/")[2].split(" ")[0];
+                String hs = j.date.toString().split(" ")[1].split(":")[0];
+                String min = j.date.toString().split(" ")[1].split(":")[1];
+                String sec = j.date.toString().split(" ")[1].split(":")[2];
+
+                String date = day+"_"+month+"_"+year+"_"+hs+"_"+min+"_"+sec;
+
+
+                String zipFile = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Job"+date+".zip";
+
+                File zipFileLocate = new File (Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Job"+date+".zip");
                 if (zipFileLocate.exists()){
                     zipFileLocate.delete();
                 }
