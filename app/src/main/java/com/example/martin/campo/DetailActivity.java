@@ -93,11 +93,12 @@ public class DetailActivity extends AppCompatActivity {
         bDel = (ImageButton)findViewById(R.id.delButton);
         bSave = (ImageButton) findViewById(R.id.saveButton);
         final int jobId = (int) getIntent().getExtras().get("jobId");
-        j = Conteiner.jobs.get(jobId);
-        photoV.setAdapter(new ImageAdapter(this, j.photo));
-        nam.setText(j.name);
-        nam = (TextView) findViewById(R.id.name);
-
+        try {
+            j = Conteiner.jobs.get(jobId);
+            photoV.setAdapter(new ImageAdapter(this, j.photo));
+            nam.setText(j.name);
+            nam = (TextView) findViewById(R.id.name);
+        } catch (Exception e){};
         if (Conteiner.jobs != null) {
             j = Conteiner.jobs.get(jobId);
 
@@ -259,9 +260,7 @@ public class DetailActivity extends AppCompatActivity {
                 data.add(Uri.fromFile(zipFileLocate));
                 Log.v("file, Data.zip", zipFile);
                 Uri attachmentUriZip = Uri.parse(zipFile);
-                //i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+attachmentUriZip));
-               /* for (int j = 0 ; j < datos.size(); j++)
-                    i.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://"+datos.elementAt(j)));*/
+
                 i.putParcelableArrayListExtra(Intent.EXTRA_STREAM, data);
                 try {
                     zip(zipFile, datos);
@@ -291,19 +290,9 @@ public class DetailActivity extends AppCompatActivity {
                             DataBaseHandler db = new DataBaseHandler(DetailActivity.this);
                             List<String> photoRealPath = new ArrayList<String>();
                             for (String s : j.photo){
-                                // SDK < API11
-                                Uri path = Uri.parse(s);
-                                if (Build.VERSION.SDK_INT < 11)
-                                    photoRealPath.add(RealPathUtil.getRealPathFromURI_BelowAPI11(getBaseContext(), path));
-
-                                    // SDK >= 11 && SDK < 19
-                                else if (Build.VERSION.SDK_INT < 19)
-                                    photoRealPath.add( RealPathUtil.getRealPathFromURI_API11to18(getBaseContext(), path));
-
-                                    // SDK > 19 (Android 4.4)
-                                else
-                                    photoRealPath.add( RealPathUtil.getRealPathFromURI_API11to18(getBaseContext(), path));
+                                photoRealPath.add (new String(s));
                             }
+                            j.photosRealUri = photoRealPath ;
                             db.addJob(j);
                             j.isImported = false;
                             Toast.makeText(DetailActivity.this, "Guardado Correctamente", Toast.LENGTH_SHORT).show();

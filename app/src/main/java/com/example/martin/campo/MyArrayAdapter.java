@@ -68,52 +68,15 @@ public class MyArrayAdapter extends ArrayAdapter <Job> {
 
     @Override
     public int getCount() {
-        //System.out.println("El tamanio de la lista es: "+ Inventario.productos.size());
+
         return Conteiner.jobs.size();
     }
 
     @Override
     public Job getItem(int position) {
-        // System.out.println("Lo que devuelve el getItem: " + Inventario.productos.get(position).nombre +"....Inventario.productos en la posicion: "+position);
+
         return Conteiner.jobs.get(position);
     }
 
 
-
-    /*
-    private void setNameTextChangeListener(final AtomPaymentHolder holder) {
-        holder.name.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                holder.atomPayment.setName(s.toString());
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-    }
-
-    private void setValueTextListeners(final AtomPaymentHolder holder) {
-        holder.value.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                try{
-                    holder.atomPayment.setValue(Double.parseDouble(s.toString()));
-                }catch (NumberFormatException e) {
-                    Log.e(LOG_TAG, "error reading double value: " + s.toString());
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-
-            @Override
-            public void afterTextChanged(Editable s) { }
-        });
-    }*/
 }

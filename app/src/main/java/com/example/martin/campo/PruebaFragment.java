@@ -75,7 +75,6 @@ public class PruebaFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_job_list, container, false);
 
-        //Conteiner.jobs = new ArrayList<Job>();
         layout = (ListView) v.findViewById(R.id.content_job);
 
         adaptador = new MyArrayAdapter(this.getActivity(), R.layout.layout_job , Conteiner.jobs);
@@ -137,7 +136,6 @@ public class PruebaFragment extends Fragment {
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
