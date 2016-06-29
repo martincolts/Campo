@@ -72,8 +72,12 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
+try {
+    imageView.setImageURI(uris.get(position));//setImageResource(mThumbIds[position]);
+} catch (Exception e){
+    return convertView ;
+}
 
-        imageView.setImageURI(uris.get(position));//setImageResource(mThumbIds[position]);
         return imageView;
     }
 

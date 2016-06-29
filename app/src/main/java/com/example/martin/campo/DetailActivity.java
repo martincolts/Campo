@@ -53,6 +53,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 import java.util.zip.ZipEntry;
@@ -236,15 +237,18 @@ public class DetailActivity extends AppCompatActivity {
                     Log.v("file, foto: ", pho.toString());
                 }
 
-                String day = j.date.toString().split("/")[0];
+              /*  String day = j.date.toString().split("/")[0];
                 String month = j.date.toString().split("/")[1];
                 String yearTemp = j.date.toString().split("/")[2];
                 String year = yearTemp.split(" ")[0];
                 String hs = j.date.toString().split(" ")[1].split(":")[0];
                 String min = j.date.toString().split(" ")[1].split(":")[1];
-                String sec = j.date.toString().split(" ")[1].split(":")[2];
+                String sec = j.date.toString().split(" ")[1].split(":")[2];*/
+                Date d = new Date (j.date);
+                String date = new Integer(d.getDay()).toString()+ new Integer(d.getMonth()).toString()+new Integer(d.getYear()).toString()+new Integer(d.getHours()).toString()+new Integer(d.getMinutes()).toString()+new Integer(d.getSeconds()).toString();
 
-                String date = day+"_"+month+"_"+year+"_"+hs+"_"+min+"_"+sec;
+                Log.v("fecha armada", date);
+                //String date = day+"_"+month+"_"+year+"_"+hs+"_"+min+"_"+sec;
 
                 String zipFile = Environment.getExternalStorageDirectory() + File.separator + "Campo_Folder" + File.separator + "Job"+date+".zip";
 
@@ -285,6 +289,21 @@ public class DetailActivity extends AppCompatActivity {
                     alert.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             DataBaseHandler db = new DataBaseHandler(DetailActivity.this);
+                            List<String> photoRealPath = new ArrayList<String>();
+                            for (String s : j.photo){
+                                // SDK < API11
+                                Uri path = Uri.parse(s);
+                                if (Build.VERSION.SDK_INT < 11)
+                                    photoRealPath.add(RealPathUtil.getRealPathFromURI_BelowAPI11(getBaseContext(), path));
+
+                                    // SDK >= 11 && SDK < 19
+                                else if (Build.VERSION.SDK_INT < 19)
+                                    photoRealPath.add( RealPathUtil.getRealPathFromURI_API11to18(getBaseContext(), path));
+
+                                    // SDK > 19 (Android 4.4)
+                                else
+                                    photoRealPath.add( RealPathUtil.getRealPathFromURI_API11to18(getBaseContext(), path));
+                            }
                             db.addJob(j);
                             j.isImported = false;
                             Toast.makeText(DetailActivity.this, "Guardado Correctamente", Toast.LENGTH_SHORT).show();

@@ -97,8 +97,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
     private void addPhotos(List<String> photo, int id , List<String> photoRealUri) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-
-
         for (int i = 0 ; i < photo.size(); i++) {
             ContentValues val = new ContentValues();
             val.put(P_ID_JOB, id );
